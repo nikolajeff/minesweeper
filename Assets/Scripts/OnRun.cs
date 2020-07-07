@@ -10,10 +10,11 @@ public class OnRun : MonoBehaviour {
 	private const float size = Cell.size;
 	
 	public static bool started = false;
+	private static bool mPressed = false;
 	public static bool ended = false;
 	
 	private Vector3 mousePos;
-	private int clickX, clickY;
+	private int prevClickX, prevClickY, clickX, clickY;
 	
 	private Camera mainCam;
 	private Transform camPos;
@@ -25,19 +26,18 @@ public class OnRun : MonoBehaviour {
 	
     void Start()
     {
-		
         minesweeper = new CellGrid(minesweeperWidth, minesweeperHeight, bombCount);
-		initCam();
 		minesweeper.initBoard();
+		initCam();
     }
 
     void Update()
     {
-		
-		if(!ended) {
+		if(!ended) 
+		{	
 			if(!started)
 			{
-				if(Input.GetMouseButtonDown(0))
+				if(Input.GetMouseButtonUp(0))
 				{
 					mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
 					clickX = (int)Mathf.Floor(mousePos.x)/(int)size;
@@ -52,12 +52,44 @@ public class OnRun : MonoBehaviour {
 			} 
 			else 
 			{
-				if(Input.GetMouseButtonDown(0))
+				if(Input.GetMouseButtonDown(0) && !mPressed)
+				{
+					mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+					prevClickX = (int)Mathf.Floor(mousePos.x)/(int)size;
+					prevClickY = (int)Mathf.Floor(mousePos.y)/(int)size;
+					
+					Cell cell = minesweeper.getCell(prevClickX, prevClickY);
+					
+					if(!cell.revealed && !cell.flagSet)
+					{
+						cell.changeSprite(Cell.cellDown);
+					}
+					
+					mPressed = true;
+					
+				}
+				
+				if(Input.GetMouseButtonUp(0) && mPressed)
 				{
 					mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
 					clickX = (int)Mathf.Floor(mousePos.x)/(int)size;
 					clickY = (int)Mathf.Floor(mousePos.y)/(int)size;
-					minesweeper.revealCell(clickX, clickY);
+					
+					if(prevClickX == clickX && prevClickY == clickY)
+					{
+						minesweeper.revealCell(clickX, clickY);
+					}
+					else 
+					{
+						Cell cell = minesweeper.getCell(prevClickX,prevClickY);
+						if(!cell.revealed && !cell.flagSet)
+						{
+							cell.changeSprite(Cell.cellSprite);
+						}
+					}
+					
+					mPressed = false;
+						
 				}
 				
 				if(Input.GetMouseButtonDown(1))

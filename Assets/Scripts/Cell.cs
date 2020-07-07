@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Cell {
-	
+	 
+
 	private static Sprite redBombSprite = Resources.Load<Sprite>("bombRed") as Sprite;
-	private static Sprite cellSprite = Resources.Load<Sprite>("cell") as Sprite;
 	private static Sprite revealedCell = Resources.Load<Sprite>("revealedCell") as Sprite;
 	private static Sprite flag = Resources.Load<Sprite>("flag") as Sprite;
 	private static Sprite one = Resources.Load<Sprite>("one") as Sprite;
@@ -17,6 +17,8 @@ public class Cell {
 	private static Sprite seven = Resources.Load<Sprite>("seven") as Sprite;
 	private static Sprite eight = Resources.Load<Sprite>("eight") as Sprite;
 	
+	public static Sprite cellDown = Resources.Load<Sprite>("cellDown") as Sprite;
+	public static Sprite cellSprite = Resources.Load<Sprite>("cell") as Sprite;
 	public static Sprite bombSprite = Resources.Load<Sprite>("bomb") as Sprite;
 	public static Sprite noBomb = Resources.Load<Sprite>("bombMiss") as Sprite;
 	
